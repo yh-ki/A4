@@ -55,7 +55,7 @@
     ;; TODO: implement cond
     [(Cond cs e) (interp-cond cs e r)]
     ;; TODO: implement case
-    [(Case ev cs el) (interp-case e cs el r)]
+    [(Case ev cs el) (interp-case ev cs el r)]
     ;; TODO: this works for just a single binding
     ;; but you need to make it work in general
     [(Let (list x) (list e1) e2)
