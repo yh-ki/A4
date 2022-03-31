@@ -86,4 +86,4 @@
   )
 
 (test run-interp)
-;(test run-compile)
+(test run-compile)
