@@ -46,10 +46,58 @@
     ;; TODO: implement let, let*, case, cond
     [(Let xs es e)   (seq)]
     [(Let* xs es e)  (seq)]
-    [(Case ev cs el) (seq)]
-    [(Cond cs el)    (seq)]))
+    [(Case ev cs el) (compile-case ev cs el c)]
+    [(Cond cs el)    (compile-cond cs el c)]))
 
+;;[Listof CondClause] Expr -> Asm
+(define (compile-cond cs el c)
+  (match cs
+    ['() (seq  (compile-e el c))]
+    [(list (Clause e1 e2) x ...)
+     (let ((c1 (gensym 'cond))
+           (c2 (gensym 'cond)))
+     (seq (compile-e e1 c)
+          (Cmp rax val-false)
+          (Je c1)
+          (compile-e e2)
+          (Jmp c2)
+          (Label c1)
+          (compile-cond x el c)
+          (Label c2)))]))
 
+;;Expr [Listof CaseClause] Expr -> Asm
+(define (compile-case ev cs el c)
+  (match cs
+    ['() (seq  (compile-e el c))]
+    [(list (Clause a b) x ...)
+     (let ((c1 (gensym 'case))
+           (c2 (gensym 'case)))
+     (seq (compile-e ev c)
+          (contain? a)
+          (Pop 'rcx)
+          (Cmp 'rcx val-true)
+          (Jne c1)
+          (compile-e b c)
+          (Jmp c2)
+          (Label c1)
+          (compile-case ev x el c)
+          (Label c2)))]))
+
+(define (contain? a)
+  (match a
+    ['() (seq (Mov 'rcx val-false)
+              (Push 'rcx))]
+    [(list x y ...)
+     (let ((d1 (gensym 'cont))
+           (d2 (gensym 'cont)))
+       (seq (Cmp rax (value->bits x))
+            (Jne d1)
+            (Mov 'rcx val-true)
+            (Push 'rcx)
+            (Jmp d2)
+            (Label d1)
+            (contain? y)
+            (Label d2)))]))
 
 ;; Value -> Asm
 (define (compile-value v)
