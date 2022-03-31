@@ -66,9 +66,9 @@
     [(Let  xs es e)
      (match (interp*-env es r)
        ['err 'err]
+       ['() (interp-env e r)]
        [vs (interp-env e (exts r xs vs))])]
-    [(Let* xs es e)
-     (match (interp*-env es r))]))
+    [(Let* xs es e)(interp-let* xs es e r)]))
 
 
 ;; HINT: this is a function that may come in handy.
@@ -112,6 +112,15 @@
      (match vs
        [(cons v vs)
         (let ((y (assoc x r))) (if y (cons (exts r xs vs) (cons (list x v) (remove y r))) (cons (exts r xs vs) (cons (list x v) r))))])]))
+
+(define (interp-let* xs es e r)
+  (match es
+    ['() (inter-env e r)]
+    [(cons e es)
+     (match (interp-env e r)
+       ['err 'err]
+       [v (match xs
+            [(cons x xs) (interp-let* xs es e (cons (list x v) r))])])]))
 
 (define (interp-cond cs e r)
   (match cs

@@ -116,8 +116,8 @@
 
 
 (test-runner-io (λ (e s) (interp/io (parse e) s)))
-;(test-runner-io (λ (e s)
-;                  (match (asm-interp/io (compile (parse e)) s)
-;                    [(cons 'err o) (cons 'err o)]
-;                    [(cons r o)
-;                     (cons (bits->value r) o)])))
+(test-runner-io (λ (e s)
+                  (match (asm-interp/io (compile (parse e)) s)
+                    [(cons 'err o) (cons 'err o)]
+                    [(cons r o)
+                     (cons (bits->value r) o)])))
