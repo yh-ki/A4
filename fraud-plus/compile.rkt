@@ -243,7 +243,7 @@
            (n2 (gensym)))
          (seq (Mov rax 0)
               (Mov 'r9 (length es))
-              (Lable n1)
+              (Label n1)
               (Cmp 'r9 0)
               (Je n2)
               (Sub 'r9 1)
