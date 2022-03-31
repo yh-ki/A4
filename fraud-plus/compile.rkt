@@ -59,7 +59,7 @@
      (seq (compile-e e1 c)
           (Cmp rax val-false)
           (Je c1)
-          (compile-e e2)
+          (compile-e e2 c)
           (Jmp c2)
           (Label c1)
           (compile-cond x el c)
