@@ -53,9 +53,9 @@
        ['err 'err]
        [v    (interp-env e2 r)])]
     ;; TODO: implement cond
-    [(Cond cs e) (interp-cond cs e)]
+    [(Cond cs e) (interp-cond cs e r)]
     ;; TODO: implement case
-    [(Case ev cs el) (interp-case e cs el)]
+    [(Case ev cs el) (interp-case e cs el r)]
     ;; TODO: this works for just a single binding
     ;; but you need to make it work in general
     [(Let (list x) (list e1) e2)
@@ -113,15 +113,15 @@
        [(cons v vs)
         (let ((y (assoc x r))) (if y (cons (exts r xs vs) (cons (list x v) (remove y r))) (cons (exts r xs vs) (cons (list x v) r))))])]))
 
-(define (interp-cond cs e)
+(define (interp-cond cs e r)
   (match cs
        ['() (interp-env e r)]
-       [(list (Clause e1 e2) x ...) (if (interp-env e1 r) (interp-env e2 r) (interp-cond x e))]))
+       [(list (Clause e1 e2) x ...) (if (interp-env e1 r) (interp-env e2 r) (interp-cond x e r))]))
 
-(define (interp-case e cs el)
+(define (interp-case e cs el r)
   (match cs
     ['() (interp-env el r)]
-    [(list (Clause a b) x ...) (if (member (interp-env e r) a) (interp-env b r) (interp-case e x el))]))
+    [(list (Clause a b) x ...) (if (member (interp-env e r) a) (interp-env b r) (interp-case e x el r))]))
 
 (define (interp-es es)
   (match es
