@@ -43,7 +43,19 @@
   (match op
     ['+
      ;; TODO: implement n-ary +
-     'err]))
+     (match (integers? vs)
+       [#f 'err]
+       [#t (interp-+ vs)])]))
+
+(define (integers? vs)
+  (match vs
+    ['() #t]
+    [(list x y ...) (if (integer? x) (integers? y) #f)]))
+
+(define (interp-+ vs)
+  (match vs
+    ['() 0]
+    [(list x y ...) (+ x (interp-+ y))]))
 
 ;; Any -> Boolean
 (define (codepoint? v)
