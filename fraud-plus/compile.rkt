@@ -129,52 +129,52 @@
     ;; TODO: implement -, abs, integer?, boolean?, etc.
     ['-
      (seq (assert-integer rax c)
-          (Mov 'r9 'rax)
-          (Mov 'rax 0)
-          (Sub 'rax 'r9))]
+          (Mov 'r9 rax)
+          (Mov rax 0)
+          (Sub rax 'r9))]
     ['abs
      (let ((ab (gensym 'a)))
        (seq (assert-integer rax c)
-            (Cmp 'rax 0)
+            (Cmp rax 0)
             (Jg ab)
-            (Mov 'r8 'rax)
-            (Mov 'rax 0)
-            (Sub 'rax 'r8)
+            (Mov 'r8 rax)
+            (Mov rax 0)
+            (Sub rax 'r8)
             (Label ab)))]
     ['not
      (let ((t (gensym 'no)))
-       (seq (Cmp 'rax val-false)
+       (seq (Cmp rax val-false)
             (Je t)
-            (Mov 'rax val-false)
+            (Mov rax val-false)
             (Jmp 'not_done)
             (Label t)
-            (Mov 'rax val-true)
+            (Mov rax val-true)
             (Label 'not_done)))]
     ['integer?
      (let ((i1 (gensym 'in))
            (i2 (gensym 'in)))
-       (seq (And 'rax 1)
-            (Cmp 'rax 0)
+       (seq (And rax 1)
+            (Cmp rax 0)
             (Jne i1)
-            (Mov 'rax val-true)
+            (Mov rax val-true)
             (Jmp i2)
             (Label i1)
-            (Mov 'rax val-false)
+            (Mov rax val-false)
             (Label i2)))]
     ['boolean?
      (let ((b1 (gensym 'bo))
            (b2 (gensym 'bo))
            (b3 (gensym 'bo)))
-       (seq (Cmp 'rax val-true)
+       (seq (Cmp rax val-true)
             (Je b1)
-            (Cmp 'rax val-false)
+            (Cmp rax val-false)
             (Je b1)
             (Jmp b2)
             (Label b1)
-            (Mov 'rax val-true)
+            (Mov rax val-true)
             (Jmp b3)
             (Label b2)
-            (Mov 'rax val-false)
+            (Mov rax val-false)
             (Label b3)))]))
 
 ;; Op2 Expr Expr CEnv -> Asm
