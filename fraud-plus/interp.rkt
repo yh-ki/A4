@@ -115,7 +115,7 @@
 
 (define (interp-let* xs es e r)
   (match es
-    ['() (inter-env e r)]
+    ['() (interp-env e r)]
     [(cons e es)
      (match (interp-env e r)
        ['err 'err]
