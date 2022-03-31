@@ -111,11 +111,11 @@
     [(cons x xs)
      (match vs
        [(cons v vs)
-        (let ((y (assoc x r))) (if y (cons (exts r xs vs) (cons (list x v) (remove y r))) (cons (exts r xs vs) (cons (list x v) r))))])]))
+        (let ((y (assoc x r))) (if y (cons (exts r xs vs) (cons (list x v) (remove y r))) ((exts r xs vs) (cons (list x v) r))))])]))
 
 (define (interp-let* xs es e r)
   (match es
-    ['() (interp-env e r)]
+    ['() (inter-env e r)]
     [(cons e es)
      (match (interp-env e r)
        ['err 'err]
