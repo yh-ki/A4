@@ -111,7 +111,7 @@
     [(cons x xs)
      (match vs
        [(cons v vs)
-        (let ((y (assoc x r))) (if y (cons (exts r xs vs) (cons (list x v) (remove y r))) ((exts r xs vs) (cons (list x v) r))))])]))
+        (let ((y (assoc x r))) (if y (exts (cons (list x v) (remove y r)) xs vs) (cons (list x v) (exts r xs vs))))])]))
 
 (define (interp-let* xs es e r)
   (match es
