@@ -49,15 +49,15 @@
     [(Case ev cs el) (c ev cs el c)]
     [(Cond cs el)    (compile-cond cs el c)]))
 
-(define (compile-let xs es e c)
+(define (compile-let xs1 xs2 es e c)
   (match es
-    ['() (seq (compile-e e c))]
+    ['() (seq (compile-e e (cons xs2 c))]
     [(cons el es)
-     (match xs
+     (match xs1
        [(cons x xs)
         (seq (compile-e el c)
              (Push rax)
-             (compile-let xs es e (cons x c)))])]))
+             (compile-let xs xs2 es e c))])]))
   
 
 ;;[Listof CondClause] Expr -> Asm
