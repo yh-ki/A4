@@ -44,10 +44,14 @@
     [(Let (list x) (list e1) e2)
      (compile-let1 x e1 e2 c)]
     ;; TODO: implement let, let*, case, cond
-    [(Let xs es e)   (seq)]
+    [(Let xs es e)   (compile-let xs es e c)]
     [(Let* xs es e)  (seq)]
-    [(Case ev cs el) (compile-case ev cs el c)]
+    [(Case ev cs el) (c ev cs el c)]
     [(Cond cs el)    (compile-cond cs el c)]))
+
+(define (compile-let xs es e c)
+  (seq (compile-e* es c)
+       (compile-e e (cons xs c))))
 
 ;;[Listof CondClause] Expr -> Asm
 (define (compile-cond cs el c)
