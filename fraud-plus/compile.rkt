@@ -67,7 +67,8 @@
        [(cons x xs)
         (seq (compile-e el c)
              (Push rax)
-             (compile-let* xs es e (cons x c)))])]))
+             (compile-let* xs es e (cons x c))
+             (Add rsp 8))])]))
   
 
 ;;[Listof CondClause] Expr -> Asm
