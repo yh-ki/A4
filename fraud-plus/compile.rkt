@@ -57,7 +57,8 @@
        [(cons x xs)
         (seq (compile-e el c)
              (Push rax)
-             (compile-let xs xs2 es e c))])]))
+             (compile-let xs xs2 es e c)
+             (Add rsp 8))])]))
 
 (define (compile-let* xs es e c)
   (match es
