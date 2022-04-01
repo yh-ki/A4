@@ -51,8 +51,7 @@
 
 (define (compile-let xs1 xs2 es e c)
   (match es
-    ['() (seq (compile-e e (append xs2 c))
-              (Add rsp 8))]
+    ['() (seq (compile-e e (append (reverse xs2) c)))]
     [(cons el es)
      (match xs1
        [(cons x xs)
