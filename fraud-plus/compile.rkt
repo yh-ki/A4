@@ -62,8 +62,7 @@
 
 (define (compile-let* xs es e c)
   (match es
-    ['() (seq (compile-e e c)
-              (Add rsp 8))]
+    ['() (seq (compile-e e c))]
     [(cons el es)
      (match xs
        [(cons x xs)
